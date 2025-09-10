@@ -31,7 +31,7 @@ class CryptoCoinTile extends StatelessWidget {
       onTap: () => {
         Navigator.of(context).pushNamed(
           '/coin',
-          arguments: coin.name)
+          arguments: coin)
       }
     );
   }

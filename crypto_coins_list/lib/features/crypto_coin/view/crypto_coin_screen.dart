@@ -1,4 +1,6 @@
 
+import 'package:crypto_coins_list/features/crypto_coin/widgets/crypto_tile.dart';
+import 'package:crypto_coins_list/repositories/crypto_coins/models/crypto_coin_model.dart';
 import 'package:flutter/material.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
@@ -9,22 +11,14 @@ class CryptoCoinScreen extends StatefulWidget {
 }
 
 class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
-  String? coinName;
+  CryptoCoin? coin;
 
   @override
   void didChangeDependencies() {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    assert(args != null && args is String, 'You must provide String args');
-    // if (args == null) {
-    //   log("You must provide args!");
-    //   return;
-    // }
-    // if (args is! String) {
-    //   log("You must provide String args");
-    //   return;
-    // }
-
-    coinName = args as String;
+    final args = ModalRoute.of(context)?.settings.arguments as CryptoCoin?;
+    assert(args != null, 'You must provide args');
+    debugPrint('args: )$args');
+    coin = args;
     setState(() {});
     super.didChangeDependencies();
   }
@@ -33,8 +27,19 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(coinName ?? '...'),
-      )
+        title: Text(coin?.name ?? '...'),
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1), // высота Divider
+            child: const Divider(
+            height: 1,
+            thickness: 1,
+            color: Colors.white24
+          ),
+        )
+      ),
+      body: (coin == null)
+        ? const Center(child: CircularProgressIndicator())
+        : CryptoDetailWidget(coin: coin!)
     );
   }
 }
