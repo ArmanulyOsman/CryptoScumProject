@@ -1,15 +1,18 @@
 
+import 'dart:convert';
+
+import 'package:crypto_coins_list/repositories/crypto_coins/models/crypto_coin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CryptoCoinTile extends StatelessWidget {
   const CryptoCoinTile({
     super.key,
-    required this.coinName,
+    required this.coin,
     required this.labelSmall,
   });
 
-  final String coinName;
+  final CryptoCoin coin;
   final TextStyle? labelSmall;
 
   @override
@@ -17,17 +20,14 @@ class CryptoCoinTile extends StatelessWidget {
     final mediumTheme = Theme.of(context).textTheme.bodyMedium;
 
     return ListTile(
-      leading: SvgPicture.asset(
-        'assets/svg/bitcoin-logo.svg',
-        height: 30,
-        width: 30),
+      leading: Image.network(coin.imageUrl),
     
       title: Text(
-        coinName, 
+        coin.name, 
         style: mediumTheme
         ),
       subtitle: Text(
-        "200.000\$",
+        '${coin.priceInUSD} \$',
         style: labelSmall
       ),
       trailing: const Icon(
@@ -35,7 +35,7 @@ class CryptoCoinTile extends StatelessWidget {
       onTap: () => {
         Navigator.of(context).pushNamed(
           '/coin',
-          arguments: coinName)
+          arguments: coin.name)
       }
     );
   }
